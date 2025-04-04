@@ -1,99 +1,1259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Round 1 – Bug Hunting 🐍🔍</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fffdf7;
-      color: #111;
-      margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      background: #000;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-    }
-    main {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
-    iframe {
-      width: 100%;
-      height: 800px;
-      border: none;
-      border-radius: 8px;
-    }
-    #timer {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #e63946;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Hunting: Python Debugging Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --cream: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .event-info {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .event-info h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .detail-card {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .detail-card h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .rounds-section {
+            margin-top: 2rem;
+        }
+
+        .round-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--accent);
+        }
+
+        .round-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .round-card p {
+            margin-bottom: 0.8rem;
+        }
+
+        .rules-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .rules-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .rules-list {
+            list-style-type: none;
+        }
+
+        .rules-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .rules-list li:before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 0.5rem;
+        }
+
+        .prizes-section {
+            margin-top: 2rem;
+        }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .prize-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .prize-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .prize-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .prize-card .prize-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        .coordinators-section {
+            margin-top: 2rem;
+        }
+
+        .coordinators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .coordinator-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .coordinator-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .coordinator-card p {
+            color: var(--text-light);
+            margin: 0.3rem 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #2c3e50;
+        }
+
+        .leaderboard-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .close-btn:hover {
+            color: var(--text);
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+            margin-top: 2rem;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-panel h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-table th {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .admin-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* MCQ Exam Styles */
+        .exam-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+            background-color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .question-card {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+
+        .question-card h4 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .option {
+            margin-bottom: 0.5rem;
+        }
+
+        .option input {
+            margin-right: 0.5rem;
+        }
+
+        .submit-exam {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .leaderboard-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .leaderboard-table th {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .leaderboard-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .leaderboard-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .name {
+            font-weight: bold;
+        }
+
+        .score {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .leaderboard-btn {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Round 1: MCQ Test 🧠</h1>
-    <p>Duration: 10 Minutes | Auto-submit enabled ⏱️</p>
-  </header>
+    <header>
+        <div class="container">
+            <div class="logo">Bug Hunting<span>🐍🔍</span></div>
+            <p>Python Debugging Challenge</p>
+        </div>
+    </header>
 
-  <main>
-    <div id="timer">Time Left: 10:00</div>
+    <div class="container">
+        <div class="event-info">
+            <h2>Event Details</h2>
+            <p>Think you have an eye for detail and a knack for debugging? "Bug Hunting: Python Debugging Challenge" is designed to test your ability to identify and fix errors in Python code. Participants will go through three rounds of increasing difficulty, from simple syntax errors to complex debugging challenges.</p>
+            <p>This event will challenge not only your Python skills but also your speed and problem-solving abilities. Only the sharpest minds will make it to the final round—do you have what it takes?</p>
+            
+            <div class="details-grid">
+                <div class="detail-card">
+                    <h3>Date & Time</h3>
+                    <p>April 7, 2025 (Monday)</p>
+                    <p>01:00 PM</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Duration</h3>
+                    <p>1 hour</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Location</h3>
+                    <p>Jijabai CS Lab</p>
+                </div>
+                <div class="detail-card">
+                    <h3>Registration</h3>
+                    <p>Registration Open</p>
+                    <button class="btn" id="registerBtn">Register Now</button>
+                </div>
+            </div>
+        </div>
 
-    <iframe src="Yhttps://forms.gle/fEa8X8kwDSZiqw3cA" allowfullscreen></iframe>
-  </main>
+        <div class="rounds-section">
+            <h2>Competition Structure</h2>
+            
+            <div class="round-card">
+                <h3>Round 1: MCQs & Minor Errors (Auto-evaluated)</h3>
+                <p>Participants will answer Python-related multiple-choice questions</p>
+                <p>Small code snippets with minor syntax/logical errors will be provided</p>
+                <p>The top participants with the highest scores advance to Round 2</p>
+                <p><strong>Time:</strong> 10 minutes</p>
+                <button class="btn btn-secondary" id="startR1Btn">Start Round 1</button>
+            </div>
+            
+            <div class="round-card">
+                <h3>Round 2: Moderate Debugging Challenges</h3>
+                <p>Participants will be given Python code with moderate errors (logic/syntax/runtime)</p>
+                <p>They must identify and fix these issues within a time limit</p>
+                <p>The most accurate and efficient debuggers advance to the final round</p>
+                <p><strong>Time:</strong> 20 minutes</p>
+                <button class="btn btn-secondary" id="startR2Btn" disabled>Start Round 2</button>
+            </div>
+            
+            <div class="round-card">
+                <h3>Round 3: Complex Debugging Problems</h3>
+                <p>This round presents intricate debugging problems requiring logical thinking and optimal solutions</p>
+                <p>The participants who solve these in the shortest time with the highest accuracy will be declared winners</p>
+                <p><strong>Time:</strong> 10 minutes</p>
+                <button class="btn btn-secondary" id="startR3Btn" disabled>Start Round 3</button>
+            </div>
+        </div>
 
-  <footer>
-    Developed by Yugal | Websters, Shivaji College
-  </footer>
+        <div class="rules-section">
+            <h2>Rules</h2>
+            <ul class="rules-list">
+                <li>Participants must solve problems individually</li>
+                <li>No external resources, IDE suggestions, or online debugging tools are allowed</li>
+                <li>Solutions must be submitted within the allotted time per round</li>
+                <li>Any form of cheating or plagiarism will lead to immediate disqualification</li>
+                <li>Judges' decisions are final</li>
+            </ul>
+        </div>
 
-  <script>
-    let timeLeft = 600; // 10 mins
-    let timerDisplay = document.getElementById("timer");
-    let tabSwitches = 0;
+        <div class="prizes-section">
+            <h2>Prizes</h2>
+            <div class="prizes-grid">
+                <div class="prize-card">
+                    <h3>1st Prize</h3>
+                    <div class="prize-amount">₹1500</div>
+                    <p>+ Certificate</p>
+                </div>
+                <div class="prize-card">
+                    <h3>2nd Prize</h3>
+                    <div class="prize-amount">₹1000</div>
+                    <p>+ Certificate</p>
+                </div>
+                <div class="prize-card">
+                    <h3>3rd Prize</h3>
+                    <p>Certificate of Appreciation</p>
+                    <p>+ Gift Hamper (if sponsored)</p>
+                </div>
+            </div>
+        </div>
 
-    const countdown = setInterval(() => {
-      if (timeLeft <= 0) {
-        clearInterval(countdown);
-        alert("Time's up! Your form will be auto-submitted.");
-        document.querySelector("iframe").contentWindow.postMessage("submitForm", "*");
-      } else {
-        let mins = Math.floor(timeLeft / 60);
-        let secs = timeLeft % 60;
-        timerDisplay.textContent = `Time Left: ${mins}:${secs < 10 ? "0" : ""}${secs}`;
-        timeLeft--;
-      }
-    }, 1000);
+        <div class="coordinators-section">
+            <h2>Coordinators</h2>
+            <div class="coordinators-grid">
+                <div class="coordinator-card">
+                    <h3>Yugal</h3>
+                    <p>yugal.shivaji@gmail.com</p>
+                    <p>9711828344</p>
+                </div>
+                <div class="coordinator-card">
+                    <h3>Anurag</h3>
+                    <p>mr.anuragprajapati586@gmail.com</p>
+                    <p>9667766463</p>
+                </div>
+            </div>
+        </div>
 
-    // Detecting tab switching or blur
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        tabSwitches++;
-        if (tabSwitches >= 3) {
-          alert("You switched tabs too many times! Auto-submitting your form.");
-          document.querySelector("iframe").contentWindow.postMessage("submitForm", "*");
-          clearInterval(countdown);
-        } else {
-          alert(`Warning: Tab switched ${tabSwitches}/3`);
+        <!-- Admin Panel (Hidden by default) -->
+        <div class="admin-panel" id="adminPanel">
+            <h2>Admin Dashboard</h2>
+            
+            <div class="form-group">
+                <label for="roundSelect">Select Round</label>
+                <select id="roundSelect">
+                    <option value="r1">Round 1</option>
+                    <option value="r2">Round 2</option>
+                    <option value="r3">Round 3</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="participantGroup">
+                <label for="participantSelect">Select Participant</label>
+                <select id="participantSelect"></select>
+            </div>
+            
+            <div class="form-group" id="scoreGroup">
+                <label for="scoreInput">Score</label>
+                <input type="number" id="scoreInput" min="0">
+            </div>
+            
+            <div class="form-group" id="questionGroup" style="display: none;">
+                <label for="questionSelect">Question Number</label>
+                <select id="questionSelect">
+                    <option value="1">Question 1</option>
+                    <option value="2">Question 2</option>
+                    <option value="3">Question 3</option>
+                    <option value="4">Question 4</option>
+                    <option value="5">Question 5</option>
+                </select>
+            </div>
+            
+            <button class="btn" id="updateScoreBtn">Update Score</button>
+            
+            <div class="form-group" id="r1CutoffGroup">
+                <label for="r1Cutoff">Round 1 Cutoff (Top N)</label>
+                <input type="number" id="r1Cutoff" min="1" value="10">
+                <button class="btn" id="setCutoffBtn" style="margin-top: 0.5rem;">Set Cutoff</button>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Current Scores</h3>
+            <table class="admin-table" id="adminScoresTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>R1 Score</th>
+                        <th>R2 Score</th>
+                        <th>R3 Score</th>
+                    </tr>
+                </thead>
+                <tbody id="adminScoresBody">
+                    <!-- Scores will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- MCQ Exam Container (Hidden by default) -->
+        <div class="exam-container" id="examContainer">
+            <div class="exam-header">
+                <h3>Round 1: Python MCQ Challenge</h3>
+                <div class="timer" id="examTimer">10:00</div>
+            </div>
+            
+            <form id="examForm">
+                <div class="question-card">
+                    <h4>1. What is the output of the following code?<br><code>print(2**3**2)</code></h4>
+                    <div class="option">
+                        <input type="radio" id="q1a" name="q1" value="a">
+                        <label for="q1a">64</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1b" name="q1" value="b">
+                        <label for="q1b">512</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1c" name="q1" value="c">
+                        <label for="q1c">36</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1d" name="q1" value="d">
+                        <label for="q1d">9</label>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <h4>2. Which of these is NOT a valid Python variable name?</h4>
+                    <div class="option">
+                        <input type="radio" id="q2a" name="q2" value="a">
+                        <label for="q2a">my_var</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2b" name="q2" value="b">
+                        <label for="q2b">_var</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2c" name="q2" value="c">
+                        <label for="q2c">9var</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2d" name="q2" value="d">
+                        <label for="q2d">var9</label>
+                    </div>
+                </div>
+                
+                <!-- More questions would be added here -->
+                
+                <div class="submit-exam">
+                    <button type="button" class="btn" id="submitExamBtn">Submit Exam</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Leaderboard Container (Hidden by default) -->
+        <div class="leaderboard-container" id="leaderboardContainer">
+            <div class="leaderboard-header">
+                <h2>Leaderboard</h2>
+                <button class="btn" id="refreshLeaderboardBtn">Refresh</button>
+            </div>
+            
+            <div class="leaderboard-tabs">
+                <button class="tab-btn active" data-round="r1">Round 1</button>
+                <button class="tab-btn" data-round="r2">Round 2</button>
+                <button class="tab-btn" data-round="r3">Round 3</button>
+            </div>
+            
+            <table class="leaderboard-table" id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Leaderboard data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Leaderboard Button (Fixed position) -->
+    <button class="btn leaderboard-btn" id="leaderboardBtn">View Leaderboard</button>
+
+    <!-- Registration Modal -->
+    <div class="modal" id="registrationModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h2>Registration Form</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="college">College/Institution</label>
+                    <input type="text" id="college" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Academic Year</label>
+                    <input type="text" id="year" required>
+                </div>
+                <button type="submit" class="btn">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Demo data for participants and scores
+        const demoParticipants = [
+            { id: 1, name: "Alice Johnson", email: "alice@example.com", phone: "1234567890", college: "ABC College", year: "3rd", r1: 18, r2: 45, r3: 90 },
+            { id: 2, name: "Bob Smith", email: "bob@example.com", phone: "9876543210", college: "XYZ University", year: "2nd", r1: 16, r2: 38, r3: 85 },
+            { id: 3, name: "Charlie Brown", email: "charlie@example.com", phone: "5551234567", college: "PQR Institute", year: "4th", r1: 20, r2: 50, r3: 95 },
+            { id: 4, name: "Diana Prince", email: "diana@example.com", phone: "9998887776", college: "LMN College", year: "3rd", r1: 15, r2: 42, r3: 88 },
+            { id: 5, name: "Ethan Hunt", email: "ethan@example.com", phone: "1112223334", college: "UVW University", year: "2nd", r1: 19, r2: 48, r3: 92 },
+            { id: 6, name: "Fiona Green", email: "fiona@example.com", phone: "4445556667", college: "RST Institute", year: "4th", r1: 14, r2: 35, r3: 80 },
+            { id: 7, name: "George Wilson", email: "george@example.com", phone: "7778889990", college: "EFG College", year: "3rd", r1: 17, r2: 40, r3: 87 },
+            { id: 8, name: "Hannah Baker", email: "hannah@example.com", phone: "2223334445", college: "HIJ University", year: "2nd", r1: 12, r2: 32, r3: 78 },
+            { id: 9, name: "Ian Cooper", email: "ian@example.com", phone: "6667778889", college: "KLM Institute", year: "4th", r1: 20, r2: 49, r3: 94 },
+            { id: 10, name: "Jessica Lee", email: "jessica@example.com", phone: "3334445556", college: "NOP College", year: "3rd", r1: 13, r2: 36, r3: 82 }
+        ];
+
+        // Current user data
+        let currentUser = null;
+        let examTimerInterval;
+        let examTimeLeft = 600; // 10 minutes in seconds
+
+        // DOM elements
+        const registerBtn = document.getElementById('registerBtn');
+        const registrationModal = document.getElementById('registrationModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const registrationForm = document.getElementById('registrationForm');
+        const startR1Btn = document.getElementById('startR1Btn');
+        const startR2Btn = document.getElementById('startR2Btn');
+        const startR3Btn = document.getElementById('startR3Btn');
+        const examContainer = document.getElementById('examContainer');
+        const examTimer = document.getElementById('examTimer');
+        const examForm = document.getElementById('examForm');
+        const submitExamBtn = document.getElementById('submitExamBtn');
+        const leaderboardBtn = document.getElementById('leaderboardBtn');
+        const leaderboardContainer = document.getElementById('leaderboardContainer');
+        const leaderboardTable = document.getElementById('leaderboardTable');
+        const leaderboardBody = document.getElementById('leaderboardBody');
+        const refreshLeaderboardBtn = document.getElementById('refreshLeaderboardBtn');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const adminPanel = document.getElementById('adminPanel');
+        const roundSelect = document.getElementById('roundSelect');
+        const participantSelect = document.getElementById('participantSelect');
+        const scoreInput = document.getElementById('scoreInput');
+        const questionSelect = document.getElementById('questionSelect');
+        const questionGroup = document.getElementById('questionGroup');
+        const updateScoreBtn = document.getElementById('updateScoreBtn');
+        const adminScoresBody = document.getElementById('adminScoresBody');
+        const r1Cutoff = document.getElementById('r1Cutoff');
+        const setCutoffBtn = document.getElementById('setCutoffBtn');
+
+        // Check if user is admin (for demo purposes)
+        const isAdmin = window.location.search.includes('admin=true');
+
+        // Initialize the page
+        function init() {
+            if (isAdmin) {
+                adminPanel.style.display = 'block';
+                populateAdminScores();
+                populateParticipantSelect();
+            }
+
+            // Check if user is registered (for demo purposes)
+            const registeredUser = localStorage.getItem('registeredUser');
+            if (registeredUser) {
+                currentUser = JSON.parse(registeredUser);
+                registerBtn.textContent = 'Registered';
+                registerBtn.disabled = true;
+                startR1Btn.disabled = false;
+            }
+
+            // Check if user has completed R1 (for demo purposes)
+            if (localStorage.getItem('completedR1')) {
+                startR2Btn.disabled = false;
+            }
+
+            // Check if user has completed R2 (for demo purposes)
+            if (localStorage.getItem('completedR2')) {
+                startR3Btn.disabled = false;
+            }
         }
-      }
-    });
 
-    window.onblur = () => {
-      tabSwitches++;
-      if (tabSwitches >= 3) {
-        alert("Window minimized/switched too many times! Submitting.");
-        document.querySelector("iframe").contentWindow.postMessage("submitForm", "*");
-        clearInterval(countdown);
-      }
-    };
-  </script>
+        // Register button click event
+        registerBtn.addEventListener('click', () => {
+            registrationModal.style.display = 'block';
+        });
+
+        // Close modal button click event
+        closeModalBtn.addEventListener('click', () => {
+            registrationModal.style.display = 'none';
+        });
+
+        // Registration form submit event
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Create new participant
+            const newParticipant = {
+                id: demoParticipants.length + 1,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                college: document.getElementById('college').value,
+                year: document.getElementById('year').value,
+                r1: 0,
+                r2: 0,
+                r3: 0
+            };
+            
+            // Add to demo data (in a real app, this would be sent to server)
+            demoParticipants.push(newParticipant);
+            currentUser = newParticipant;
+            
+            // Save to localStorage (for demo persistence)
+            localStorage.setItem('registeredUser', JSON.stringify(newParticipant));
+            
+            // Update UI
+            registerBtn.textContent = 'Registered';
+            registerBtn.disabled = true;
+            startR1Btn.disabled = false;
+            registrationModal.style.display = 'none';
+            
+            // If admin, refresh participant list
+            if (isAdmin) {
+                populateParticipantSelect();
+                populateAdminScores();
+            }
+            
+            alert('Registration successful! You can now participate in Round 1.');
+        });
+
+        // Start Round 1 button click event
+        startR1Btn.addEventListener('click', () => {
+            if (!currentUser) {
+                alert('Please register first.');
+                return;
+            }
+            
+            // Start the exam
+            examContainer.style.display = 'block';
+            startExamTimer();
+            
+            // Prevent tab switching (demo implementation)
+            window.addEventListener('blur', handleWindowBlur);
+            window.addEventListener('focus', handleWindowFocus);
+        });
+
+        // Start Round 2 button click event
+        startR2Btn.addEventListener('click', () => {
+            alert('Round 2 will begin shortly. You will have 20 minutes to debug 5 Python code snippets.');
+            // In a real implementation, this would load the R2 interface
+        });
+
+        // Start Round 3 button click event
+        startR3Btn.addEventListener('click', () => {
+            alert('Round 3 will begin shortly. You will have 10 minutes to debug 2 complex Python programs.');
+            // In a real implementation, this would load the R3 interface
+        });
+
+        // Submit exam button click event
+        submitExamBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to submit your answers? You cannot change them after submission.')) {
+                submitExam();
+            }
+        });
+
+        // Leaderboard button click event
+        leaderboardBtn.addEventListener('click', () => {
+            leaderboardContainer.style.display = 'block';
+            refreshLeaderboard('r1');
+        });
+
+        // Refresh leaderboard button click event
+        refreshLeaderboardBtn.addEventListener('click', () => {
+            const activeTab = document.querySelector('.tab-btn.active');
+            refreshLeaderboard(activeTab.dataset.round);
+        });
+
+        // Tab button click events
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                refreshLeaderboard(btn.dataset.round);
+            });
+        });
+
+        // Round select change event
+        roundSelect.addEventListener('change', () => {
+            const round = roundSelect.value;
+            if (round === 'r1') {
+                questionGroup.style.display = 'none';
+            } else {
+                questionGroup.style.display = 'block';
+            }
+            populateParticipantSelect();
+        });
+
+        // Update score button click event
+        updateScoreBtn.addEventListener('click', () => {
+            const participantId = parseInt(participantSelect.value);
+            const round = roundSelect.value;
+            const score = parseInt(scoreInput.value);
+            const questionNum = questionSelect.value;
+            
+            if (isNaN(participantId) || isNaN(score)) {
+                alert('Please select a participant and enter a valid score.');
+                return;
+            }
+            
+            // Update score in demo data
+            const participant = demoParticipants.find(p => p.id === participantId);
+            if (participant) {
+                if (round === 'r1') {
+                    participant.r1 = score;
+                } else if (round === 'r2') {
+                    // In a real app, this would be more sophisticated
+                    participant.r2 = score;
+                } else if (round === 'r3') {
+                    participant.r3 = score;
+                }
+                
+                alert('Score updated successfully!');
+                populateAdminScores();
+                
+                // Refresh leaderboard if open
+                if (leaderboardContainer.style.display === 'block') {
+                    const activeTab = document.querySelector('.tab-btn.active');
+                    refreshLeaderboard(activeTab.dataset.round);
+                }
+            } else {
+                alert('Participant not found.');
+            }
+        });
+
+        // Set cutoff button click event
+        setCutoffBtn.addEventListener('click', () => {
+            const cutoff = parseInt(r1Cutoff.value);
+            if (isNaN(cutoff) || cutoff < 1) {
+                alert('Please enter a valid cutoff number.');
+                return;
+            }
+            
+            alert(`Round 1 cutoff set to top ${cutoff} participants.`);
+            // In a real app, this would be saved to the server
+        });
+
+        // Start exam timer
+        function startExamTimer() {
+            examTimeLeft = 600; // 10 minutes
+            updateExamTimerDisplay();
+            
+            examTimerInterval = setInterval(() => {
+                examTimeLeft--;
+                updateExamTimerDisplay();
+                
+                if (examTimeLeft <= 0) {
+                    clearInterval(examTimerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        // Update exam timer display
+        function updateExamTimerDisplay() {
+            const minutes = Math.floor(examTimeLeft / 60);
+            const seconds = examTimeLeft % 60;
+            examTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            // Change color when time is running out
+            if (examTimeLeft <= 60) {
+                examTimer.style.color = '#e74c3c';
+            }
+        }
+
+        // Submit exam
+        function submitExam() {
+            clearInterval(examTimerInterval);
+            
+            // Calculate score (for demo, just random between 10-20)
+            const score = Math.floor(Math.random() * 11) + 10;
+            
+            // Update user's score
+            if (currentUser) {
+                currentUser.r1 = score;
+                localStorage.setItem('registeredUser', JSON.stringify(currentUser));
+                
+                // Update in demo data
+                const participant = demoParticipants.find(p => p.id === currentUser.id);
+                if (participant) {
+                    participant.r1 = score;
+                }
+            }
+            
+            // Hide exam container
+            examContainer.style.display = 'none';
+            
+            // Remove event listeners
+            window.removeEventListener('blur', handleWindowBlur);
+            window.removeEventListener('focus', handleWindowFocus);
+            
+            // Mark R1 as completed
+            localStorage.setItem('completedR1', 'true');
+            startR2Btn.disabled = false;
+            
+            alert(`Round 1 completed! Your score: ${score}/20. Top participants will advance to Round 2.`);
+            
+            // If admin, refresh data
+            if (isAdmin) {
+                populateAdminScores();
+            }
+        }
+
+        // Handle window blur (user switching tabs)
+        function handleWindowBlur() {
+            // In a real implementation, this would trigger an auto-submit
+            alert('Warning: Switching tabs during the exam is not allowed. This would auto-submit your exam in a real competition.');
+            // submitExam();
+        }
+
+        // Handle window focus
+        function handleWindowFocus() {
+            // Could add additional warnings here
+        }
+
+        // Refresh leaderboard for a specific round
+        function refreshLeaderboard(round) {
+            // Sort participants by the selected round's score
+            let sortedParticipants;
+            
+            if (round === 'r1') {
+                sortedParticipants = [...demoParticipants].sort((a, b) => b.r1 - a.r1);
+            } else if (round === 'r2') {
+                sortedParticipants = [...demoParticipants].sort((a, b) => b.r2 - a.r2);
+            } else if (round === 'r3') {
+                sortedParticipants = [...demoParticipants].sort((a, b) => b.r3 - a.r3);
+            }
+            
+            // Clear existing rows
+            leaderboardBody.innerHTML = '';
+            
+            // Add new rows
+            sortedParticipants.forEach((participant, index) => {
+                const row = document.createElement('tr');
+                
+                // Highlight current user
+                if (currentUser && participant.id === currentUser.id) {
+                    row.style.backgroundColor = '#fffde7';
+                }
+                
+                const rankCell = document.createElement('td');
+                rankCell.className = 'rank';
+                rankCell.textContent = index + 1;
+                
+                const nameCell = document.createElement('td');
+                nameCell.className = 'name';
+                nameCell.textContent = participant.name;
+                
+                const scoreCell = document.createElement('td');
+                scoreCell.className = 'score';
+                
+                if (round === 'r1') {
+                    scoreCell.textContent = `${participant.r1}/20`;
+                } else if (round === 'r2') {
+                    scoreCell.textContent = `${participant.r2}/50`;
+                } else if (round === 'r3') {
+                    scoreCell.textContent = `${participant.r3}/100`;
+                }
+                
+                row.appendChild(rankCell);
+                row.appendChild(nameCell);
+                row.appendChild(scoreCell);
+                
+                leaderboardBody.appendChild(row);
+            });
+        }
+
+        // Populate admin scores table
+        function populateAdminScores() {
+            adminScoresBody.innerHTML = '';
+            
+            demoParticipants.forEach(participant => {
+                const row = document.createElement('tr');
+                
+                const idCell = document.createElement('td');
+                idCell.textContent = participant.id;
+                
+                const nameCell = document.createElement('td');
+                nameCell.textContent = participant.name;
+                
+                const r1Cell = document.createElement('td');
+                r1Cell.textContent = participant.r1;
+                
+                const r2Cell = document.createElement('td');
+                r2Cell.textContent = participant.r2;
+                
+                const r3Cell = document.createElement('td');
+                r3Cell.textContent = participant.r3;
+                
+                row.appendChild(idCell);
+                row.appendChild(nameCell);
+                row.appendChild(r1Cell);
+                row.appendChild(r2Cell);
+                row.appendChild(r3Cell);
+                
+                adminScoresBody.appendChild(row);
+            });
+        }
+
+        // Populate participant select dropdown
+        function populateParticipantSelect() {
+            participantSelect.innerHTML = '';
+            
+            demoParticipants.forEach(participant => {
+                const option = document.createElement('option');
+                option.value = participant.id;
+                option.textContent = participant.name;
+                participantSelect.appendChild(option);
+            });
+        }
+
+        // Initialize the page
+        init();
+    </script>
+
+    <!-- Google Apps Script backend simulation -->
+    <script>
+        // In a real implementation, this would be replaced with actual Google Apps Script code
+        // Here's a sample of what the Apps Script code might look like for the backend:
+        
+        /*
+        // Code.gs (Google Apps Script)
+        function doGet(e) {
+            return handleRequest(e);
+        }
+        
+        function doPost(e) {
+            return handleRequest(e);
+        }
+        
+        function handleRequest(e) {
+            const action = e.parameter.action;
+            const sheet = SpreadsheetApp.openById('YOUR_SHEET_ID').getActiveSheet();
+            const data = sheet.getDataRange().getValues();
+            const headers = data[0];
+            
+            if (action === 'getParticipants') {
+                const participants = [];
+                for (let i = 1; i < data.length; i++) {
+                    const participant = {};
+                    for (let j = 0; j < headers.length; j++) {
+                        participant[headers[j]] = data[i][j];
+                    }
+                    participants.push(participant);
+                }
+                return ContentService.createTextOutput(JSON.stringify(participants))
+                    .setMimeType(ContentService.MimeType.JSON);
+            }
+            else if (action === 'updateScore') {
+                const id = e.parameter.id;
+                const round = e.parameter.round;
+                const score = e.parameter.score;
+                
+                // Find and update the participant's score
+                // ...
+                
+                return ContentService.createTextOutput('Score updated successfully');
+            }
+            // Other actions...
+        }
+        */
+    </script>
 </body>
 </html>
