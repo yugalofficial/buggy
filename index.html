@@ -291,6 +291,7 @@
         }
     </style>
 </head>
+  
 <body>
     <div class="navbar">
         <div class="navbar-title">
@@ -394,7 +395,7 @@
 
     <script>
         // Configuration
-        const API_URL = 'https://script.google.com/macros/s/AKfycbw3KPG1bmlD96pwvKkeiPAgx8jmhCRJlb2URXgsAv7V0b5Xr-Q0vhnm-hBALl3Naz1R/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxTlHkWlSq0BOX5qgpsFuJYCAGAwvjLo2AxpBdKVlFjt9UBbbnOe6Do3Fcn7gYP8s6R/exec';
         let currentRound = 'r1';
         let leaderboardData = [];
 
@@ -580,7 +581,7 @@
         // Auto-refresh leaderboard every 30 seconds
         setInterval(() => {
             loadLeaderboard(currentRound);
-        }, 30000);
+        }, 3000);
     </script>
 </body>
 </html>
