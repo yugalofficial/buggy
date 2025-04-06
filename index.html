@@ -3,375 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bug Hunt Leaderboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Webster - Bug Hunting Competition</title>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --primary-light: #34495e;
-            --secondary: #e74c3c;
-            --accent: #3498db;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --text: #333;
-            --text-light: #7f8c8d;
-            --cream: #f5f5f5;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
+            font-family: Arial, sans-serif;
             background-color: #222;
             color: #fff;
+            text-align: center;
             margin: 0;
             padding: 0;
         }
-
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
             background: rgba(0, 0, 0, 0.7);
-            padding: 15px 20px;
+            padding: 10px;
             font-size: 20px;
             font-weight: bold;
             color: #fff;
             backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             z-index: 1000;
         }
-
-        .navbar-title {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar-title i {
-            margin-right: 10px;
-            color: var(--secondary);
-        }
-
-        .round-tabs {
-            display: flex;
-            gap: 10px;
-        }
-
-        .round-tab {
-            padding: 5px 15px;
-            border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .round-tab.active {
-            background-color: var(--secondary);
-            font-weight: bold;
-        }
-
         .container {
             margin-top: 70px;
-            width: 90%;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+            width: 80%;
+            margin: auto;
             padding: 20px;
-        }
-
-        .leaderboard-container {
             background: #333;
             border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            margin-bottom: 30px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
         }
-
-        h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: var(--secondary);
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin-top: 15px;
             background: #444;
-            border-radius: 8px;
-            overflow: hidden;
         }
-
         th, td {
-            padding: 12px 15px;
+            padding: 12px;
+            border: 1px solid #555;
             text-align: center;
-            border-bottom: 1px solid #555;
         }
-
         th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9em;
+            background: #000;
+            color: #fff;
         }
-
         tr:nth-child(even) {
-            background-color: #555;
+            background: #555;
         }
-
-        tr:hover {
-            background-color: #666;
+        .winner-selection {
+            margin-top: 20px;
+            margin-bottom: 30px;
         }
-
-        .rank-1 {
-            background-color: rgba(255, 215, 0, 0.2) !important;
-        }
-
-        .rank-2 {
-            background-color: rgba(192, 192, 192, 0.2) !important;
-        }
-
-        .rank-3 {
-            background-color: rgba(205, 127, 50, 0.2) !important;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .filter-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .filter-control label {
-            font-weight: bold;
-        }
-
-        input[type="number"] {
-            width: 60px;
-            padding: 8px;
-            border-radius: 5px;
-            border: none;
-            background-color: #555;
-            color: white;
+        input {
+            width: 50px;
+            padding: 5px;
             text-align: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
+            font-size: 16px;
             border-radius: 5px;
             border: none;
-            font-weight: bold;
+        }
+        button {
+            background: gold;
+            color: black;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            border: none;
+            margin: 5px;
+            transition: all 0.3s;
         }
-
-        .btn-primary {
-            background-color: var(--secondary);
-            color: white;
+        button:hover {
+            background: #ffd700;
+            transform: scale(1.05);
         }
-
-        .btn-primary:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-print {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-print:hover {
-            background-color: #2980b9;
-        }
-
         .footer {
-            margin-top: 40px;
-            text-align: center;
-            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
             color: #aaa;
-            font-size: 0.9em;
         }
-
-        .footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Print section styles */
         .print-section {
             display: none;
+            color: #000;
+            background: #fff;
             padding: 20px;
-            background-color: white;
+        }
+        .round-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .round-tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background: #444;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .round-tab.active {
+            background: gold;
             color: black;
         }
-
-        .print-section h2, .print-section h3 {
-            color: var(--primary);
+        .round-content {
+            display: none;
         }
-
-        .print-section table {
-            background-color: white;
-            color: black;
-            border: 1px solid #ddd;
+        .round-content.active {
+            display: block;
         }
-
-        .print-section th {
-            background-color: var(--primary);
+        .admin-panel {
+            background: #111;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+        }
+        .admin-input {
+            margin: 10px;
+            padding: 8px;
+            width: 200px;
+            border-radius: 5px;
+            border: none;
+        }
+        .admin-btn {
+            background: #4CAF50;
             color: white;
         }
-
-        .print-section tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .admin-btn.delete {
+            background: #f44336;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
-            }
-            
-            .navbar {
-                flex-direction: column;
-                padding: 10px;
-            }
-            
-            .round-tabs {
-                margin-top: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            th, td {
-                padding: 8px 10px;
-                font-size: 0.9em;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        .toggle-admin {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            z-index: 1000;
         }
     </style>
 </head>
-  
 <body>
-    <div class="navbar">
-        <div class="navbar-title">
-            <i class="fas fa-bug"></i>
-            <span>Bug Hunt Leaderboard</span>
-        </div>
-        <div class="round-tabs">
-            <div class="round-tab active" data-round="r1">Round 1</div>
-            <div class="round-tab" data-round="r2">Round 2</div>
-            <div class="round-tab" data-round="r3">Round 3</div>
-        </div>
-    </div>
+
+    <div class="navbar">Webster - Bug Hunting Competition</div>
 
     <div class="container">
-        <div class="leaderboard-container">
-            <h2 id="leaderboard-title">Round 1 Leaderboard</h2>
-            
-            <div class="controls">
-                <div class="filter-control">
-                    <label for="winner-count">Show Top:</label>
-                    <input type="number" id="winner-count" min="1" max="50" value="10">
-                    <button class="btn btn-primary" id="filter-btn">
-                        <i class="fas fa-filter"></i> Filter
-                    </button>
-                </div>
-                <button class="btn btn-print" id="print-btn">
-                    <i class="fas fa-print"></i> Print Report
-                </button>
-            </div>
-            
-            <table id="leaderboard-table">
+        <div class="round-tabs">
+            <div class="round-tab active" onclick="showRound('round1')">Round 1</div>
+            <div class="round-tab" onclick="showRound('round2')">Round 2</div>
+            <div class="round-tab" onclick="showRound('round3')">Round 3</div>
+        </div>
+
+        <!-- Round 1 Content -->
+        <div id="round1" class="round-content active">
+            <h2>Round 1 Leaderboard</h2>
+            <table>
                 <thead>
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
-                        <th id="score-header">Score</th>
-                        <th class="college-col">College</th>
+                        <th>Score</th>
                     </tr>
                 </thead>
-                <tbody id="leaderboard-body">
-                    <!-- Data will be inserted here -->
+                <tbody id="round1-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round1-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round1-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round1')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 1 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round1-winners-body">
+                    <!-- Winners displayed here -->
                 </tbody>
             </table>
         </div>
+
+        <!-- Round 2 Content -->
+        <div id="round2" class="round-content">
+            <h2>Round 2 Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round2-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round2-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round2-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round2')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 2 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round2-winners-body">
+                    <!-- Winners displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Round 3 Content -->
+        <div id="round3" class="round-content">
+            <h2>Round 3 Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round3-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round3-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round3-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round3')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 3 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round3-winners-body">
+                    <!-- Winners displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <button onclick="printReport()">Print Full Report</button>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="admin-panel">
+            <h2>Admin Panel</h2>
+            <div>
+                <select id="admin-round" class="admin-input">
+                    <option value="round1">Round 1</option>
+                    <option value="round2">Round 2</option>
+                    <option value="round3">Round 3</option>
+                </select>
+                <input type="text" id="admin-name" class="admin-input" placeholder="Participant Name">
+                <input type="number" id="admin-score" class="admin-input" placeholder="Score">
+                <button onclick="updateScore()" class="admin-btn">Update Score</button>
+                <button onclick="deleteParticipant()" class="admin-btn delete">Delete</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <input type="text" id="admin-password" class="admin-input" placeholder="Admin Password" type="password">
+                <button onclick="verifyAdmin()" class="admin-btn">Verify</button>
+            </div>
+        </div>
     </div>
 
+    <button class="toggle-admin" onclick="toggleAdminPanel()">⚙️</button>
+
     <div class="footer">
-        Created by <a href="https://www.linkedin.com/in/yugalofficial" target="_blank">Yugal</a> | 
-        Bug Hunt Challenge 2025
+        Created by <a href="https://www.linkedin.com/in/yugalofficial" target="_blank" style="color: #fff;">Yugal</a>
     </div>
 
     <div class="print-section" id="print-section">
         <h2 style="text-align: center;">Webster - Techelons 2025</h2>
-        <h3 style="text-align: center; color: var(--secondary);">🏆 Bug Hunting (Python) Competition Report 🏆</h3>
+        <h3>🏆 Bug Hunting Competition Report 🏆</h3>
 
         <h3>1. Introduction</h3>
-        <p>The <b>WEBSTERS - Bug Hunting (Python) Competition 2025</b> successfully enhanced debugging skills among students through three challenging rounds.</p>
+        <p>The <b>WEBSTERS - Bug Hunting Competition 2025</b> successfully enhanced debugging skills among students through three challenging rounds.</p>
 
-        <h3>2. Competition Winners</h3>
-        <table id="print-winners-table">
+        <h3>2. Round 1 Winners</h3>
+        <table>
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>College</th>
-                    <th>Final Score</th>
+                    <th>Score</th>
                 </tr>
             </thead>
-            <tbody id="print-winners-body">
+            <tbody id="print-round1-winners-body">
                 <!-- Winners inserted here -->
             </tbody>
         </table>
 
-        <h3>3. Full Results</h3>
-        <table id="print-leaderboard-table">
+        <h3>3. Round 2 Winners</h3>
+        <table>
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>College</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="print-round2-winners-body">
+                <!-- Winners inserted here -->
+            </tbody>
+        </table>
+
+        <h3>4. Round 3 Winners</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="print-round3-winners-body">
+                <!-- Winners inserted here -->
+            </tbody>
+        </table>
+
+        <h3>5. Complete Leaderboard</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
                     <th>Round 1</th>
                     <th>Round 2</th>
                     <th>Round 3</th>
@@ -383,205 +365,179 @@
             </tbody>
         </table>
 
-        <h3>4. Conclusion</h3>
-        <p>The competition successfully tested participants' debugging skills and problem-solving abilities under time constraints. Congratulations to all participants for their excellent performance.</p>
+        <h3>6. Conclusion</h3>
+        <p>The competition successfully tested students' debugging skills across multiple rounds. Thanks to all participants.</p>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <p><b>Organized by:</b></p>
-            <p>WEBSTERS - Computer Science Department</p>
-            <p><b>Report generated on:</b> <span id="report-date"></span></p>
+        <div style="text-align: center;">
+            <b>This Report is created by Yugal (Secretary, WEBSTERS)</b>
         </div>
     </div>
 
     <script>
-        // Configuration
-        const API_URL = 'https://script.google.com/macros/s/AKfycbz_BUc8ntJNlrySGhs_LBkmO5rxlPZdOi8uPVPxv8LccqEf0r1hvMffk43m2UGtVF2CFQ/exec';
-        let currentRound = 'r1';
-        let leaderboardData = [];
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzn_VThChbQzS3zMWsQxYyjSb1LKKMc3_VGtOIlz_-QGcQzpQPRwl8e05cUsm-hDEyv/exec"; // Replace with your Apps Script URL
+        let isAdmin = false;
 
-        // DOM Elements
-        const roundTabs = document.querySelectorAll('.round-tab');
-        const leaderboardTitle = document.getElementById('leaderboard-title');
-        const scoreHeader = document.getElementById('score-header');
-        const collegeCols = document.querySelectorAll('.college-col');
-        const leaderboardBody = document.getElementById('leaderboard-body');
-        const winnerCountInput = document.getElementById('winner-count');
-        const filterBtn = document.getElementById('filter-btn');
-        const printBtn = document.getElementById('print-btn');
-        const printSection = document.getElementById('print-section');
-        const printWinnersBody = document.getElementById('print-winners-body');
-        const printLeaderboardBody = document.getElementById('print-leaderboard-body');
-        const reportDate = document.getElementById('report-date');
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set current date for report
-            const today = new Date();
-            reportDate.textContent = today.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+        function showRound(roundId) {
+            document.querySelectorAll('.round-content').forEach(content => {
+                content.classList.remove('active');
             });
-
-            // Load initial data
-            loadLeaderboard(currentRound);
-            
-            // Set up event listeners
-            roundTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    currentRound = tab.dataset.round;
-                    updateActiveTab();
-                    loadLeaderboard(currentRound);
-                });
+            document.querySelectorAll('.round-tab').forEach(tab => {
+                tab.classList.remove('active');
             });
             
-            filterBtn.addEventListener('click', filterLeaderboard);
-            printBtn.addEventListener('click', generateReport);
-        });
-
-        // Update active tab styling
-        function updateActiveTab() {
-            roundTabs.forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.round === currentRound);
-            });
+            document.getElementById(roundId).classList.add('active');
+            document.querySelector(`.round-tab[onclick="showRound('${roundId}')"]`).classList.add('active');
             
-            // Update title
-            const roundNames = {
-                'r1': 'Round 1',
-                'r2': 'Round 2',
-                'r3': 'Round 3'
-            };
-            leaderboardTitle.textContent = `${roundNames[currentRound]} Leaderboard`;
-            
-            // Update score header
-            scoreHeader.textContent = currentRound === 'r1' ? 'MCQ Score' : 
-                                     currentRound === 'r2' ? 'Debug Score' : 'Final Score';
-            
-            // Show/hide college column
-            collegeCols.forEach(col => {
-                col.style.display = currentRound === 'r1' ? 'none' : 'table-cell';
-            });
+            fetchLeaderboard();
         }
 
-        // Load leaderboard data
-        async function loadLeaderboard(round) {
-            try {
-                const response = await fetch(`${API_URL}?action=get${round.toUpperCase()}Leaderboard`);
-                leaderboardData = await response.json();
-                renderLeaderboard(leaderboardData);
-            } catch (error) {
-                console.error('Error loading leaderboard:', error);
-                leaderboardBody.innerHTML = `<tr><td colspan="4">Error loading data. Please try again.</td></tr>`;
-            }
-        }
+        async function fetchLeaderboard() {
+            const activeRound = document.querySelector('.round-content.active').id;
+            const response = await fetch(`${scriptURL}?round=${activeRound}`);
+            const data = await response.json();
+            const tbody = document.getElementById(`${activeRound}-body`);
+            tbody.innerHTML = "";
 
-        // Render leaderboard table
-        function renderLeaderboard(data) {
-            if (!data || data.length === 0) {
-                leaderboardBody.innerHTML = `<tr><td colspan="4">No data available</td></tr>`;
-                return;
-            }
-            
-            leaderboardBody.innerHTML = '';
             data.forEach((entry, index) => {
-                const row = document.createElement('tr');
-                if (index < 3) row.classList.add(`rank-${index + 1}`);
-                
-                row.innerHTML = `
-                    <td>${entry.rank}</td>
-                    <td>${entry.name}</td>
-                    <td>${entry.score}</td>
-                    <td class="college-col">${entry.college || '-'}</td>
-                `;
-                
-                leaderboardBody.appendChild(row);
+                tbody.innerHTML += `<tr><td>${index + 1}</td><td>${entry.name}</td><td>${entry.score}</td></tr>`;
             });
         }
 
-        // Filter leaderboard to show top N participants
-        async function filterLeaderboard() {
-            const count = parseInt(winnerCountInput.value);
-            if (isNaN(count) || count < 1) {
-                alert('Please enter a valid number');
+        function showRoundWinners(roundId) {
+            let n = document.getElementById(`${roundId}-winner-count`).value;
+            const tbody = document.getElementById(`${roundId}-winners-body`);
+            tbody.innerHTML = "";
+
+            fetch(`${scriptURL}?round=${roundId}`).then(response => response.json()).then(data => {
+                for (let i = 0; i < n && i < data.length; i++) {
+                    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${data[i].name}</td><td>${data[i].score}</td></tr>`;
+                }
+            });
+        }
+
+        async function printReport() {
+            const [round1Data, round2Data, round3Data, allData] = await Promise.all([
+                fetch(`${scriptURL}?round=round1`).then(r => r.json()),
+                fetch(`${scriptURL}?round=round2`).then(r => r.json()),
+                fetch(`${scriptURL}?round=round3`).then(r => r.json()),
+                fetch(`${scriptURL}?round=all`).then(r => r.json())
+            ]);
+            
+            // Round 1 Winners
+            document.getElementById("print-round1-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round1Data.length; i++) {
+                document.getElementById("print-round1-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round1Data[i].name}</td><td>${round1Data[i].score}</td></tr>`;
+            }
+
+            // Round 2 Winners
+            document.getElementById("print-round2-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round2Data.length; i++) {
+                document.getElementById("print-round2-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round2Data[i].name}</td><td>${round2Data[i].score}</td></tr>`;
+            }
+
+            // Round 3 Winners
+            document.getElementById("print-round3-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round3Data.length; i++) {
+                document.getElementById("print-round3-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round3Data[i].name}</td><td>${round3Data[i].score}</td></tr>`;
+            }
+
+            // Full Leaderboard
+            document.getElementById("print-leaderboard-body").innerHTML = "";
+            allData.forEach((entry, index) => {
+                document.getElementById("print-leaderboard-body").innerHTML += 
+                    `<tr>
+                        <td>${index + 1}</td>
+                        <td>${entry.name}</td>
+                        <td>${entry.round1 || 0}</td>
+                        <td>${entry.round2 || 0}</td>
+                        <td>${entry.round3 || 0}</td>
+                        <td>${(entry.round1 || 0) + (entry.round2 || 0) + (entry.round3 || 0)}</td>
+                    </tr>`;
+            });
+
+            document.body.innerHTML = document.getElementById("print-section").innerHTML;
+            window.print();
+            location.reload();
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById("admin-panel");
+            panel.style.display = panel.style.display === "block" ? "none" : "block";
+        }
+
+        async function verifyAdmin() {
+            const password = document.getElementById("admin-password").value;
+            const response = await fetch(`${scriptURL}?action=verify&password=${password}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                isAdmin = true;
+                alert("Admin verified successfully!");
+            } else {
+                alert("Invalid admin password!");
+            }
+        }
+
+        async function updateScore() {
+            if (!isAdmin) {
+                alert("Please verify as admin first!");
                 return;
             }
             
-            try {
-                let filteredData = leaderboardData;
-                
-                // For Round 1 and Round 2, we can filter the existing data
-                if (currentRound === 'r1' || currentRound === 'r2') {
-                    filteredData = leaderboardData.slice(0, count);
-                }
-                // For Round 3, we might want to get fresh data from the sheet
-                else if (currentRound === 'r3') {
-                    const response = await fetch(`${API_URL}?action=filterRound3Winners&count=${count}`);
-                    const result = await response.json();
-                    if (result.success) {
-                        await loadLeaderboard(currentRound);
-                        return;
-                    }
-                }
-                
-                renderLeaderboard(filteredData);
-            } catch (error) {
-                console.error('Error filtering leaderboard:', error);
-                alert('Error filtering leaderboard. Please try again.');
+            const round = document.getElementById("admin-round").value;
+            const name = document.getElementById("admin-name").value;
+            const score = document.getElementById("admin-score").value;
+            
+            if (!name || !score) {
+                alert("Please enter both name and score!");
+                return;
+            }
+            
+            const response = await fetch(`${scriptURL}?action=update&round=${round}&name=${encodeURIComponent(name)}&score=${score}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                alert("Score updated successfully!");
+                fetchLeaderboard();
+            } else {
+                alert("Error updating score: " + result.message);
             }
         }
 
-        // Generate printable report
-        async function generateReport() {
-            try {
-                // Get report data from backend
-                const response = await fetch(`${API_URL}?action=getReportData`);
-                const reportData = await response.json();
-                
-                // Populate winners table
-                printWinnersBody.innerHTML = '';
-                reportData.winners.forEach((winner, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${winner.rank}</td>
-                        <td>${winner.name}</td>
-                        <td>${winner.college || '-'}</td>
-                        <td>${winner.score}</td>
-                    `;
-                    printWinnersBody.appendChild(row);
-                });
-                
-                // Populate full leaderboard table
-                printLeaderboardBody.innerHTML = '';
-                reportData.allParticipants.forEach((participant, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${participant.rank}</td>
-                        <td>${participant.name}</td>
-                        <td>${participant.college || '-'}</td>
-                        <td>${participant.r1Score || '-'}</td>
-                        <td>${participant.r2Score || '-'}</td>
-                        <td>${participant.r3Score || '-'}</td>
-                        <td>${participant.totalScore || '-'}</td>
-                    `;
-                    printLeaderboardBody.appendChild(row);
-                });
-                
-                // Show print section and print
-                document.body.innerHTML = printSection.innerHTML;
-                window.print();
-                
-                // Reload the page after printing
-                location.reload();
-            } catch (error) {
-                console.error('Error generating report:', error);
-                alert('Error generating report. Please try again.');
+        async function deleteParticipant() {
+            if (!isAdmin) {
+                alert("Please verify as admin first!");
+                return;
+            }
+            
+            const name = document.getElementById("admin-name").value;
+            
+            if (!name) {
+                alert("Please enter a name to delete!");
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to delete ${name} from all rounds?`)) {
+                return;
+            }
+            
+            const response = await fetch(`${scriptURL}?action=delete&name=${encodeURIComponent(name)}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                alert("Participant deleted successfully!");
+                fetchLeaderboard();
+            } else {
+                alert("Error deleting participant: " + result.message);
             }
         }
 
-        // Auto-refresh leaderboard every 30 seconds
-        setInterval(() => {
-            loadLeaderboard(currentRound);
-        }, 3000);
+        // Initialize
+        fetchLeaderboard();
+        setInterval(fetchLeaderboard, 3000);
     </script>
 </body>
 </html>
