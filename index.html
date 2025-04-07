@@ -1,7 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset=<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webster - Bug Hunting Competition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            text-align: left;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            line-height: 0.2;
+            border: 1px solid #e1e1e1;
+            z-index: 1000;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        .container {
+            margin-top: 70px;
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: #333;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #444;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #555;
+            text-align: center;
+        }
+        th {
+            background: #000;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background: #555;
+        }
+        .winner-selection {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background: gold;
+            color: black;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #ffd700;
+            transform: scale(1.05);
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .print-section {
+            display: none;
+            color: #000;
+            background: #fff;
+            padding: 20px;
+        }
+        .round-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .round-tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background: #444;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .round-tab.active {
+            background: gold;
+            color: black;
+        }
+        .round-content {
+            display: none;
+        }
+        .round-content.active {
+            display: block;
+        }
+        .admin-panel {
+            background: #111;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+        }
+        .admin-input {
+            margin: 10px;
+            padding: 8px;
+            width: 200px;
+            border-radius: 5px;
+            border: none;
+        }
+        .admin-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .admin-btn.delete {
+            background: #f44336;
+        }
+        .toggle-admin {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">Bug Hunting Leaderboard</div><br><br><br><br>
+
+    
+    <div class="container">
+        <div class="round-tabs">
+            <div class="round-tab active" onclick="showRound('round1')">Round 1</div>
+            <div class="round-tab" onclick="showRound('round2')">Round 2</div>
+            <div class="round-tab" onclick="showRound('round3')">Round 3</div>
+        </div>
+
+        <!-- Round 1 Content -->
+        <div id="round1" class="round-content active">
+            <h2>Round 1 Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round1-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round1-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round1-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round1')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 1 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round1-winners-body">
+                    <!-- Winners displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Round 2 Content -->
+        <div id="round2" class="round-content">
+            <h2>Round 2 Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round2-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round2-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round2-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round2')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 2 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round2-winners-body">
+                    <!-- Winners displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Round 3 Content -->
+        <div id="round3" class="round-content">
+            <h2>Round 3 Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round3-body">
+                    <!-- Data inserted here -->
+                </tbody>
+            </table>
+
+            <div class="winner-selection">
+                <label for="round3-winner-count">Select No. of Winners:</label>
+                <input type="number" id="round3-winner-count" min="1" max="10" value="3">
+                <button onclick="showRoundWinners('round3')">Show Winners</button>
+            </div>
+
+            <h2>🏆 Round 3 Top Winners 🏆</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="round3-winners-body">
+                    <!-- Winners displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <button onclick="printReport()">Print Full Report</button>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="admin-panel">
+            <h2>Admin Panel</h2>
+            <div>
+                <select id="admin-round" class="admin-input">
+                    <option value="round1">Round 1</option>
+                    <option value="round2">Round 2</option>
+                    <option value="round3">Round 3</option>
+                </select>
+                <input type="text" id="admin-name" class="admin-input" placeholder="Participant Name">
+                <input type="number" id="admin-score" class="admin-input" placeholder="Score">
+                <button onclick="updateScore()" class="admin-btn">Update Score</button>
+                <button onclick="deleteParticipant()" class="admin-btn delete">Delete</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <input type="text" id="admin-password" class="admin-input" placeholder="Admin Password" type="password">
+                <button onclick="verifyAdmin()" class="admin-btn">Verify</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="toggle-admin" onclick="toggleAdminPanel()">⚙️</button>
+
+    <div class="footer">
+        Created by <a href="https://www.linkedin.com/in/yugalofficial" target="_blank" style="color: #fff;">Yugal</a>
+    </div>
+
+    <div class="print-section" id="print-section">
+        <h2 style="text-align: center;">Webster - Techelons 2025</h2>
+        <h3>🏆 Bug Hunting Competition Report 🏆</h3>
+
+        <h3>1. Introduction</h3>
+        <p>The <b>WEBSTERS - Bug Hunting Competition 2025</b> successfully enhanced debugging skills among students through three challenging rounds.</p>
+
+        <h3>2. Round 1 Winners</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="print-round1-winners-body">
+                <!-- Winners inserted here -->
+            </tbody>
+        </table>
+
+        <h3>3. Round 2 Winners</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="print-round2-winners-body">
+                <!-- Winners inserted here -->
+            </tbody>
+        </table>
+
+        <h3>4. Round 3 Winners</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="print-round3-winners-body">
+                <!-- Winners inserted here -->
+            </tbody>
+        </table>
+
+        <h3>5. Complete Leaderboard</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Round 1</th>
+                    <th>Round 2</th>
+                    <th>Round 3</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="print-leaderboard-body">
+                <!-- Full leaderboard inserted here -->
+            </tbody>
+        </table>
+
+        <h3>6. Conclusion</h3>
+        <p>The competition successfully tested students' debugging skills across multiple rounds. Thanks to all participants.</p>
+
+        <div style="text-align: center;">
+            <b>This Report is created by Yugal (Secretary, WEBSTERS)</b>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyHKhD5e-npo8Ewtdo9w4IwJUYIh9AoafGlEdTCOjSm-qB7hnzAh2k3kU7Ey6Dzu4od/exec"; // Replace with your Apps Script URL
+        let isAdmin = false;
+
+        function showRound(roundId) {
+            document.querySelectorAll('.round-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.round-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(roundId).classList.add('active');
+            document.querySelector(`.round-tab[onclick="showRound('${roundId}')"]`).classList.add('active');
+            
+            fetchLeaderboard();
+        }
+
+        async function fetchLeaderboard() {
+            const activeRound = document.querySelector('.round-content.active').id;
+            const response = await fetch(`${scriptURL}?round=${activeRound}`);
+            const data = await response.json();
+            const tbody = document.getElementById(`${activeRound}-body`);
+            tbody.innerHTML = "";
+
+            data.forEach((entry, index) => {
+                tbody.innerHTML += `<tr><td>${index + 1}</td><td>${entry.name}</td><td>${entry.score}</td></tr>`;
+            });
+        }
+
+        function showRoundWinners(roundId) {
+            let n = document.getElementById(`${roundId}-winner-count`).value;
+            const tbody = document.getElementById(`${roundId}-winners-body`);
+            tbody.innerHTML = "";
+
+            fetch(`${scriptURL}?round=${roundId}`).then(response => response.json()).then(data => {
+                for (let i = 0; i < n && i < data.length; i++) {
+                    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${data[i].name}</td><td>${data[i].score}</td></tr>`;
+                }
+            });
+        }
+
+        async function printReport() {
+            const [round1Data, round2Data, round3Data, allData] = await Promise.all([
+                fetch(`${scriptURL}?round=round1`).then(r => r.json()),
+                fetch(`${scriptURL}?round=round2`).then(r => r.json()),
+                fetch(`${scriptURL}?round=round3`).then(r => r.json()),
+                fetch(`${scriptURL}?round=all`).then(r => r.json())
+            ]);
+            
+            // Round 1 Winners
+            document.getElementById("print-round1-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round1Data.length; i++) {
+                document.getElementById("print-round1-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round1Data[i].name}</td><td>${round1Data[i].score}</td></tr>`;
+            }
+
+            // Round 2 Winners
+            document.getElementById("print-round2-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round2Data.length; i++) {
+                document.getElementById("print-round2-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round2Data[i].name}</td><td>${round2Data[i].score}</td></tr>`;
+            }
+
+            // Round 3 Winners
+            document.getElementById("print-round3-winners-body").innerHTML = "";
+            for (let i = 0; i < 3 && i < round3Data.length; i++) {
+                document.getElementById("print-round3-winners-body").innerHTML += 
+                    `<tr><td>${i + 1}</td><td>${round3Data[i].name}</td><td>${round3Data[i].score}</td></tr>`;
+            }
+
+            // Full Leaderboard
+            document.getElementById("print-leaderboard-body").innerHTML = "";
+            allData.forEach((entry, index) => {
+                document.getElementById("print-leaderboard-body").innerHTML += 
+                    `<tr>
+                        <td>${index + 1}</td>
+                        <td>${entry.name}</td>
+                        <td>${entry.round1 || 0}</td>
+                        <td>${entry.round2 || 0}</td>
+                        <td>${entry.round3 || 0}</td>
+                        <td>${(entry.round1 || 0) + (entry.round2 || 0) + (entry.round3 || 0)}</td>
+                    </tr>`;
+            });
+
+            document.body.innerHTML = document.getElementById("print-section").innerHTML;
+            window.print();
+            location.reload();
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById("admin-panel");
+            panel.style.display = panel.style.display === "block" ? "none" : "block";
+        }
+
+        async function verifyAdmin() {
+            const password = document.getElementById("admin-password").value;
+            const response = await fetch(`${scriptURL}?action=verify&password=${password}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                isAdmin = true;
+                alert("Admin verified successfully!");
+            } else {
+                alert("Invalid admin password!");
+            }
+        }
+
+        async function updateScore() {
+            if (!isAdmin) {
+                alert("Please verify as admin first!");
+                return;
+            }
+            
+            const round = document.getElementById("admin-round").value;
+            const name = document.getElementById("admin-name").value;
+            const score = document.getElementById("admin-score").value;
+            
+            if (!name || !score) {
+                alert("Please enter both name and score!");
+                return;
+            }
+            
+            const response = await fetch(`${scriptURL}?action=update&round=${round}&name=${encodeURIComponent(name)}&score=${score}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                alert("Score updated successfully!");
+                fetchLeaderboard();
+            } else {
+                alert("Error updating score: " + result.message);
+            }
+        }
+
+        async function deleteParticipant() {
+            if (!isAdmin) {
+                alert("Please verify as admin first!");
+                return;
+            }
+            
+            const name = document.getElementById("admin-name").value;
+            
+            if (!name) {
+                alert("Please enter a name to delete!");
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to delete ${name} from all rounds?`)) {
+                return;
+            }
+            
+            const response = await fetch(`${scriptURL}?action=delete&name=${encodeURIComponent(name)}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                alert("Participant deleted successfully!");
+                fetchLeaderboard();
+            } else {
+                alert("Error deleting participant: " + result.message);
+            }
+        }
+
+        // Initialize
+        fetchLeaderboard();
+        setInterval(fetchLeaderboard, 3000);
+    </script>
+</body>
+</html>UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webster - Bug Hunting Competition</title>
     <style>
